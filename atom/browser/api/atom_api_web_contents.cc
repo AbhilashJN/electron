@@ -1591,6 +1591,11 @@ void WebContents::TabTraverse(bool reverse) {
   web_contents()->FocusThroughTabTraversal(reverse);
 }
 
+v8::Local<v8::Object> WebContents::CreateEvent() {
+  return mate::internal::CreateJSEvent(isolate(), GetWrapper(), nullptr,
+                                       nullptr);
+}
+
 bool WebContents::SendIPCMessage(bool internal,
                                  bool send_to_all,
                                  const std::string& channel,
@@ -2057,6 +2062,7 @@ void WebContents::BuildPrototype(v8::Isolate* isolate,
       .SetMethod("focus", &WebContents::Focus)
       .SetMethod("isFocused", &WebContents::IsFocused)
       .SetMethod("tabTraverse", &WebContents::TabTraverse)
+      .SetMethod("_createEvent", &WebContents::CreateEvent)
       .SetMethod("_send", &WebContents::SendIPCMessage)
       .SetMethod("sendInputEvent", &WebContents::SendInputEvent)
       .SetMethod("beginFrameSubscription", &WebContents::BeginFrameSubscription)
